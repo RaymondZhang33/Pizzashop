@@ -1,17 +1,18 @@
-/* 
+/*
 * Names: Raymond Zhang
 * Program Name: Pizza Shop
 * Date: 11/25/24
-* Extra: I added an option for in-house seating which forces an extra $1000 onto the user.
+* Extra: I added an option for in-house seating which forces an extra $1000 onto the user. I also utilized arrays to print out the individual amount of toppings for each small & large pizza.
 */
 #include <iostream>
 using namespace std;
 
-double calculatePrice(int amtlarge, int amtsmall, int topping, bool fee, int smalltops, int largetops);
-void displayBill(double totalprice);
+double calculatePrice(int amtlarge, int amtsmall, int totaltops, bool fee);
+void displayBill(double totalcost, int amtlarge, int amtsmall, int totaltops, bool fee, int smallarr[], int largearr[]);
 
 int main() {
-    int choice, small, large, topping, amt, amt2;
+    int choice, small, large;
+    int totaltops = 0;
     bool fee = false;
     cout << "Welcome to Raymond's Pizza Shop! Here we serve and deliver the freshest and tastiest pizza you will ever try in your whole life!" << endl;
 
@@ -32,80 +33,73 @@ int main() {
     cin >> small;
     cout << "How many large pizzas would you like to order ($50): ";
     cin >> large;
-    cout << "Here are our unique list of toppings:\n1. Rice ($1.51)\n2. Shrimp ($2.31)\n3. Sea Bass Gills ($2.45)\n4. Spaghetti ($2.98)\n5. Egg Nog ($3.21)\n6. Burnt Bread Chunks ($45)" << endl;
-    cout << "Unfortunately, due to our lack of business we can only afford to allow the customer 1 of our signature toppings that can go on or not go on each of the pizzas ordered." << endl;
-    cout << "Which topping would you like? (Type 0 for no toppings)" << endl;
-    cin >> topping;
-    if (topping != 0) {
-        cout << "How many of the " << small << " small pizzas would you like the topping on: ";
-        cin >> amt;
-        cout << "How many of the " << large << " large pizzas would you like the topping on: ";
-        cin >> amt2;
+    int num = 1;
+    
+    // Extra:
+    int smalltops[small]; // Declares an array of length (small)
+    int largetops[large];
+    
+    for (int i = 0; i < small; i++) {
+        int toppings = 0;
+        cout << "Small Pizza #" << num << ":" << endl;
+        cout << "How many toppings do you want on this small pizza (Each topping costs $25): ";
+        cin >> toppings;
+        totaltops += toppings;
+        smalltops[i] = toppings;
+        num++; // Increments the num variable
     }
-    int tot = amt + amt2;
-    double total = calculatePrice(large, small, topping, fee, tot);
+    num = 1;
+    for (int i = 0; i < large; i++) {
+        int toppings = 0;
+        cout << "Large Pizza #" << num << ":" << endl;
+        cout << "How many toppings do you want on this large pizza (Each topping costs $25): ";
+        cin >> toppings;
+        totaltops += toppings;
+        largetops[i] = toppings;
+        num++;
+    }
+    double totalcost = calculatePrice(large, small, totaltops, fee);
+    displayBill(totalcost, large, small, totaltops, fee, smalltops, largetops); // Calls the displayBill function which is void so it does not need to be stored in a variable or printed out. 
     return 0;
 }
 
-double calculatePrice(int amtlarge, int amtsmall, int topping, bool fee, int tot) {
-    double toppingtotal;
-    switch(topping) {
-        case 1:
-            toppingtotal += 1.51 * tot;
-            break;
-        case 2:
-            toppingtotal += 2.31 * tot;
-            break;
-        case 3:
-            toppingtotal += 2.45 * tot;
-            break;
-        case 4:
-            toppingtotal += 2.98 * tot;
-            break;
-        case 5:
-            toppingtotal += 3.21 * tot;
-            break;
-        case 6:
-            toppingtotal += 45 * tot;
-            break;
-        default:
-            break;
-    }
+double calculatePrice(int amtlarge, int amtsmall, int totaltops, bool fee) {
     if (fee) {
-        return amtlarge * 50 + amtsmall * 10 + toppingtotal + 1000;
+        return amtlarge * 50 + amtsmall * 10 + totaltops * 25 + 1000;
     }
     else {
-        return amtlarge * 50 + amtsmall * 10 + toppingtotal;
+        return amtlarge * 50 + amtsmall * 10 + totaltops * 25;
     }
 }
-
-void displayBill(double totalprice, int amtlarge, int amtsmall, int topping, bool fee, int amt, int amt2) {
-    string toppingname;
-    cout << "--------------Bill--------------" << endl;
-    cout << "Total Large Pizzas Ordered: " << amtlarge << endl;
-    cout << "Total Small Pizzas Ordered: " << amtsmall << endl;
-    switch(topping) {
-        case 1:
-            toppingname = "Rice";
-            break;
-        case 2:
-            toppingname = "Shrimp";
-            break;
-        case 3:
-            toppingname = "Shrimp";
-            break;
-        case 4:
-            toppingname = "Shrimp";
-            break;
-        case 5:
-            toppingname = "Shrimp";
-            break;
-        case 6:
-            toppingname = "Shrimp";
-            break;
-        default:
-            toppingname = "None";
-            break;
+void displayBill(double totalcost, int amtlarge, int amtsmall, int totaltops, bool fee, int smallarr[], int largearr[]) {
+    cout << "--------------- Bill ---------------" << endl;
+    cout << "Large Pizzas Ordered: " << amtlarge << endl;
+    cout << "Small Pizzas Ordered: " << amtsmall << endl;
+    for (int i = 0; i < amtlarge; i++) {
+        if (largearr[i] == 1) {
+            cout << "Large Pizza #" << i + 1 << ": " << largearr[i] << " Topping" << endl;
+        }
+        else {
+            cout << "Large Pizza #" << i + 1 << ": " << largearr[i] << " Toppings" << endl;
+        }
     }
-    cout << "Topping of Choice: " << 
+    for (int i = 0; i < amtsmall; i++) {
+        if (smallarr[i] == 1) {
+            cout << "Small Pizza #" << i + 1 << ": " << smallarr[i] << " Topping" << endl;
+        }
+        else {
+            cout << "Small Pizza #" << i + 1 << ": " << smallarr[i] << " Toppings" << endl;
+        }
+    }
+    cout << "Total Toppings Ordered: " << totaltops << endl;
+    if (fee) { // Checks if the user has to pay a fee
+        cout << "Fee: $1000" << endl;
+    }
+    else {
+        cout << "Fee: None" << endl;
+    }
+    cout << "Subtotal: $" << totalcost << endl;
+    cout << "Sales Tax: 6.625%" << endl;
+    cout << "Total: $" << totalcost * 1.06625 << endl; // Multiplies the subtotal by NJ sales tax.
+    cout << "Again, thank you for visiting our fine establishment! We hope to see you again in the future!" << endl;
 }
