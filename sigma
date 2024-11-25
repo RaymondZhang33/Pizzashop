@@ -1,0 +1,111 @@
+/* 
+* Names: Raymond Zhang
+* Program Name: Pizza Shop
+* Date: 11/25/24
+* Extra: I added an option for in-house seating which forces an extra $1000 onto the user.
+*/
+#include <iostream>
+using namespace std;
+
+double calculatePrice(int amtlarge, int amtsmall, int topping, bool fee, int smalltops, int largetops);
+void displayBill(double totalprice);
+
+int main() {
+    int choice, small, large, topping, amt, amt2;
+    bool fee = false;
+    cout << "Welcome to Raymond's Pizza Shop! Here we serve and deliver the freshest and tastiest pizza you will ever try in your whole life!" << endl;
+
+    // Extra:
+    cout << "Please keep in mind that our shop only typically takes pickup. However, currently we are running a deal that allows in-house exquisite dining for a hefty price of just $1000 per person seated." << endl;
+
+    cout << "Please enter the option that best suits you: " << endl;
+    cout << "1. Pickup\n2. In-House Seating" << endl;
+    cin >> choice;
+    if (choice == 1) {
+        cout << "You have chosen the pickup option." << endl;
+    }
+    else {
+        cout << "You have chosen the in-house seating option. In addition to this, since you have chosen our exquisite dining option, a fee of $1000 will be added to your total bill." << endl;
+        fee = true;
+    }
+    cout << "How many small pizzas would you like to order ($10): ";
+    cin >> small;
+    cout << "How many large pizzas would you like to order ($50): ";
+    cin >> large;
+    cout << "Here are our unique list of toppings:\n1. Rice ($1.51)\n2. Shrimp ($2.31)\n3. Sea Bass Gills ($2.45)\n4. Spaghetti ($2.98)\n5. Egg Nog ($3.21)\n6. Burnt Bread Chunks ($45)" << endl;
+    cout << "Unfortunately, due to our lack of business we can only afford to allow the customer 1 of our signature toppings that can go on or not go on each of the pizzas ordered." << endl;
+    cout << "Which topping would you like? (Type 0 for no toppings)" << endl;
+    cin >> topping;
+    if (topping != 0) {
+        cout << "How many of the " << small << " small pizzas would you like the topping on: ";
+        cin >> amt;
+        cout << "How many of the " << large << " large pizzas would you like the topping on: ";
+        cin >> amt2;
+    }
+    int tot = amt + amt2;
+    double total = calculatePrice(large, small, topping, fee, tot);
+    return 0;
+}
+
+double calculatePrice(int amtlarge, int amtsmall, int topping, bool fee, int tot) {
+    double toppingtotal;
+    switch(topping) {
+        case 1:
+            toppingtotal += 1.51 * tot;
+            break;
+        case 2:
+            toppingtotal += 2.31 * tot;
+            break;
+        case 3:
+            toppingtotal += 2.45 * tot;
+            break;
+        case 4:
+            toppingtotal += 2.98 * tot;
+            break;
+        case 5:
+            toppingtotal += 3.21 * tot;
+            break;
+        case 6:
+            toppingtotal += 45 * tot;
+            break;
+        default:
+            break;
+    }
+    if (fee) {
+        return amtlarge * 50 + amtsmall * 10 + toppingtotal + 1000;
+    }
+    else {
+        return amtlarge * 50 + amtsmall * 10 + toppingtotal;
+    }
+}
+
+void displayBill(double totalprice, int amtlarge, int amtsmall, int topping, bool fee, int amt, int amt2) {
+    string toppingname;
+    cout << "--------------Bill--------------" << endl;
+    cout << "Total Large Pizzas Ordered: " << amtlarge << endl;
+    cout << "Total Small Pizzas Ordered: " << amtsmall << endl;
+    switch(topping) {
+        case 1:
+            toppingname = "Rice";
+            break;
+        case 2:
+            toppingname = "Shrimp";
+            break;
+        case 3:
+            toppingname = "Shrimp";
+            break;
+        case 4:
+            toppingname = "Shrimp";
+            break;
+        case 5:
+            toppingname = "Shrimp";
+            break;
+        case 6:
+            toppingname = "Shrimp";
+            break;
+        default:
+            toppingname = "None";
+            break;
+    }
+    cout << "Topping of Choice: " << 
+}
