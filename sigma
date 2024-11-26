@@ -112,7 +112,7 @@ void displayBill(double totalcost, int amtlarge, int amtsmall, int totaltops, bo
         cout << "Fee: $1000" << endl;
     }
     else {
-        cout << "Fee: None" << endl;
+        cout << "Fee: $0" << endl;
     }
     cout << "Subtotal: $" << totalcost << endl;
     cout << "Sales Tax: 6.625%" << endl;
